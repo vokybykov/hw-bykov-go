@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	fmt.Printf(stringutil.Reverse("!SUTO ,olleH"))
+	fmt.Println(stringutil.Reverse("!SUTO ,olleH"))
 }
