@@ -1,10 +1,8 @@
-package unpack_test
+package hw02_unpack_string
 
 import (
 	"errors"
 	"testing"
-
-	unpack "github.com/vokybykov/hw02_unpack_string"
 
 	"github.com/stretchr/testify/require"
 )
@@ -28,7 +26,7 @@ func TestUnpack(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.input, func(t *testing.T) {
-			result, err := unpack.Unpack(tc.input)
+			result, err := Unpack(tc.input)
 			require.NoError(t, err)
 			require.Equal(t, tc.expected, result)
 		})
@@ -40,8 +38,8 @@ func TestUnpackStringStartsWithDigit(t *testing.T) {
 	for _, tc := range invalidStrings {
 		tc := tc
 		t.Run(tc, func(t *testing.T) {
-			_, err := unpack.Unpack(tc)
-			require.Truef(t, errors.Is(err, unpack.ErrStringStartsWithDigit), "actual error %q", err)
+			_, err := Unpack(tc)
+			require.Truef(t, errors.Is(err, ErrStringStartsWithDigit), "actual error %q", err)
 		})
 	}
 }
@@ -51,8 +49,8 @@ func TestUnpackStringContainsNumbers(t *testing.T) {
 	for _, tc := range invalidStrings {
 		tc := tc
 		t.Run(tc, func(t *testing.T) {
-			_, err := unpack.Unpack(tc)
-			require.Truef(t, errors.Is(err, unpack.ErrStringContainsNumbers), "actual error %q", err)
+			_, err := Unpack(tc)
+			require.Truef(t, errors.Is(err, ErrStringContainsNumbers), "actual error %q", err)
 		})
 	}
 }
