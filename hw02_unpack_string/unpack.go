@@ -6,7 +6,8 @@ import (
 	"unicode"
 )
 
-var ErrInvalidString = errors.New("invalid string")
+var ErrStringStartsWithDigit = errors.New("string starts with digit")
+var ErrStringContainsNumbers = errors.New("string contains numbers")
 
 func Unpack(stringForUnpacking string) (string, error) {
 	var result strings.Builder
@@ -16,7 +17,7 @@ func Unpack(stringForUnpacking string) (string, error) {
 	}
 
 	if !unicode.IsLetter(rune(stringForUnpacking[0])) {
-		return result.String(), ErrInvalidString
+		return result.String(), ErrStringStartsWithDigit
 	}
 
 	for i := 0; i < len(stringForUnpacking); i++ {
@@ -25,7 +26,8 @@ func Unpack(stringForUnpacking string) (string, error) {
 		if i+1 < len(stringForUnpacking) {
 			nextChar = rune(stringForUnpacking[i+1])
 		}
-		if unicode.IsLetter(rune(currentChar)) {
+		switch {
+		case unicode.IsLetter(rune(currentChar)):
 			if unicode.IsDigit(nextChar) {
 				if nextChar > 0 {
 					repeatCount := int(nextChar - '0')
@@ -36,9 +38,9 @@ func Unpack(stringForUnpacking string) (string, error) {
 			} else {
 				result.WriteString(string(currentChar))
 			}
-		} else if unicode.IsDigit(rune(currentChar)) {
+		case unicode.IsDigit(rune(currentChar)):
 			if unicode.IsDigit(nextChar) {
-				return result.String(), ErrInvalidString
+				return result.String(), ErrStringContainsNumbers
 			}
 		}
 	}
