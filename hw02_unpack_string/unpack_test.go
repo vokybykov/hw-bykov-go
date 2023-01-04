@@ -2,8 +2,9 @@ package unpack_test
 
 import (
 	"errors"
-	unpack "github.com/vokybykov/hw02_unpack_string"
 	"testing"
+
+	unpack "github.com/vokybykov/hw02_unpack_string"
 
 	"github.com/stretchr/testify/require"
 )
@@ -44,6 +45,7 @@ func TestUnpackStringStartsWithDigit(t *testing.T) {
 		})
 	}
 }
+
 func TestUnpackStringContainsNumbers(t *testing.T) {
 	invalidStrings := []string{"a23b", "aaa10b"}
 	for _, tc := range invalidStrings {

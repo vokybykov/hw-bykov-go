@@ -6,8 +6,10 @@ import (
 	"unicode"
 )
 
-var ErrStringStartsWithDigit = errors.New("string starts with digit")
-var ErrStringContainsNumbers = errors.New("string contains numbers")
+var (
+	ErrStringStartsWithDigit = errors.New("string starts with digit")
+	ErrStringContainsNumbers = errors.New("string contains numbers")
+)
 
 func Unpack(stringForUnpacking string) (string, error) {
 	var result strings.Builder
