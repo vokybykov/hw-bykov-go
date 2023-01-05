@@ -12,38 +12,30 @@ var (
 )
 
 func Unpack(stringForUnpacking string) (string, error) {
-	var result strings.Builder
-
 	if stringForUnpacking == "" {
-		return result.String(), nil
+		return "", nil
+	}
+	runes := []rune(stringForUnpacking)
+	if !unicode.IsLetter(runes[0]) {
+		return "", ErrStringStartsWithDigit
 	}
 
-	if !unicode.IsLetter(rune(stringForUnpacking[0])) {
-		return result.String(), ErrStringStartsWithDigit
-	}
-
-	for i := 0; i < len(stringForUnpacking); i++ {
-		currentChar := stringForUnpacking[i]
+	var result strings.Builder
+	for i := 0; i < len(runes); i++ {
+		currentChar := runes[i]
 		nextChar := rune(0)
-		if i+1 < len(stringForUnpacking) {
-			nextChar = rune(stringForUnpacking[i+1])
+		if i+1 < len(runes) {
+			nextChar = runes[i+1]
 		}
-		switch {
-		case unicode.IsLetter(rune(currentChar)):
+		if unicode.IsLetter(currentChar) {
 			if unicode.IsDigit(nextChar) {
-				if nextChar > 0 {
-					repeatCount := int(nextChar - '0')
-					result.WriteString(strings.Repeat(string(currentChar), repeatCount))
-				} else {
-					continue
-				}
+				repeatCount := int(nextChar - '0')
+				result.WriteString(strings.Repeat(string(currentChar), repeatCount))
 			} else {
 				result.WriteString(string(currentChar))
 			}
-		case unicode.IsDigit(rune(currentChar)):
-			if unicode.IsDigit(nextChar) {
-				return result.String(), ErrStringContainsNumbers
-			}
+		} else if unicode.IsDigit(currentChar) && unicode.IsDigit(nextChar) {
+			return result.String(), ErrStringContainsNumbers
 		}
 	}
 

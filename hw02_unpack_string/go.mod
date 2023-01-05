@@ -1,4 +1,4 @@
-module github.com/vokybykov/hw02_unpack_string
+module github.com/vokybykov/hw-bykov-go/hw02_unpack_string
 
 go 1.19
 
