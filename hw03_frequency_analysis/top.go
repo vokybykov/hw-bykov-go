@@ -18,7 +18,7 @@ func Top10(textForAnalysis string) []string {
 		wordCounts[word]++
 	}
 
-	var wordCountsSlice []wordCount
+	wordCountsSlice := []wordCount{}
 	for word, count := range wordCounts {
 		wordCountsSlice = append(wordCountsSlice, wordCount{word, count})
 	}
