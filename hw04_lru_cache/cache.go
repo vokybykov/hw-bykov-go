@@ -64,8 +64,7 @@ func (c *lruCache) Clear() {
 }
 
 func (c *lruCache) removeOldest() {
-	element := c.queue.Back()
-	if element != nil {
+	if element := c.queue.Back(); element != nil {
 		c.queue.Remove(element)
 		item := element.Value.(*cacheItem)
 		delete(c.items, item.key)
