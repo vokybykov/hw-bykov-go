@@ -67,4 +67,32 @@ func TestRun(t *testing.T) {
 		require.Equal(t, runTasksCount, int32(tasksCount), "not all tasks were completed")
 		require.LessOrEqual(t, int64(elapsedTime), int64(sumTime/2), "tasks were run sequentially?")
 	})
+
+	t.Run("no tasks", func(t *testing.T) {
+		var tasks []Task
+		workersCount := 5
+		maxErrorsCount := 2
+
+		err := Run(tasks, workersCount, maxErrorsCount)
+
+		require.NoError(t, err)
+	})
+
+	t.Run("error limit exceeded", func(t *testing.T) {
+		tasksCount := 50
+		tasks := make([]Task, 0, tasksCount)
+
+		for i := 0; i < tasksCount; i++ {
+			tasks = append(tasks, func() error {
+				return errors.New("error")
+			})
+		}
+
+		workersCount := 10
+		maxErrorsCount := tasksCount - 1
+
+		err := Run(tasks, workersCount, maxErrorsCount)
+
+		require.ErrorIs(t, err, ErrErrorsLimitExceeded, "error limit exceeded error not returned")
+	})
 }
